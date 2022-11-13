@@ -28,6 +28,11 @@ public class MembersService {
         return repository.saveAll(toCreate);
     }
 
+    public Members updateById(Long id) {
+            Members members = repository.findById(id).get();
+            return repository.save(members);
+    }
+
     public Members findById(Long id) {
         if (repository.findById(id).isEmpty()) {
             return null;
