@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,24 @@ public class MembersService {
 
     }
 
+    @Transactional
+    public List<Members> createMembers(List<Members> toCreate){
+        return repository.saveAll(toCreate);
+    }
 
+    public Members findById(Long id) {
+        if (repository.findById(id).isEmpty()) {
+            return null;
+        }
+        Members members = repository.findById(id).get();
+        return members;
+    }
 
+    public String deleteById(Long id) {
+        if (repository.findById(id).isPresent()) {
+            repository.deleteById(id);
+            return "Members successfully deleted";
+        }
+        return "The members does not exist";
+    }
 }
