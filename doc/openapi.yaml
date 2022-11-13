@@ -43,7 +43,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateMembers"
+              type: array
+              items:
+                $ref: "#/components/schemas/CreateMembers"
       responses:
         200:
           description: Successfully add
@@ -122,6 +124,7 @@ components:
           example: Doe
         age:
           type: integer
+          example: 20
         address:
           type: string
           example: Ambaranjana
