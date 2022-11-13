@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: Members techzara Manangement
+  description: Members techzara Manangement
+  version: 1.1.2
+servers:
+  - url: 'http://localhost:8080'
+    description: local environment
+tags:
+  - name: Members
+paths:
+  /members:
+    get:
+      tags:
+        - Members
+      description: Get all members
+      summary: Get all members
+      parameters:
+        - name: page
+          in: query
+          schema:
+            $ref: "#/components/schemas/Page"
+        - name: page_size
+          in: query
+          schema:
+            $ref: '#/components/schemas/PageSize'
+      responses:
+        200:
+          description: List of members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: "#/components/schemas/Members"
+    post:
+      tags:
+        - Members
+      description: Add members
+      summary: Add members
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMembers"
+      responses:
+        200:
+          description: Successfully add
+  /members/{id}:
+    get:
+      tags:
+        - Members
+      description: Get members by id
+      summary: Get members by id
+      parameters:
+        - name: id
+          in: path
+          description: id of the members
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: The identified members.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Members"
+    put:
+      tags:
+        - Members
+      description: update members by id
+      summary: update members by id
+      parameters:
+        - name: id
+          in: path
+          description: id of the members
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: The identified members.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateMembers"
+    delete:
+      tags:
+        - Members
+      summary: "Delete members by id"
+      operationId: "deleteCocktailById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad request"
+components:
+  schemas:
+    Page:
+      type: integer
+      description: Start at `1`
+    PageSize:
+      type: integer
+      description: Cannot exceed `500`
+    CreateMembers:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: John
+        lastname:
+          type: string
+          example: Doe
+        age:
+          type: integer
+        address:
+          type: string
+          example: Ambaranjana
+        password:
+          type: string
+    Members:
+      allOf:
+        - $ref: '#/components/schemas/CreateMembers'
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    Exception:
+      type: object
+      properties:
+        type:
+          type: string
+        message:
+          type: string
+    BadRequestException:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+      example:
+        type: BadRequestException
+        message: Bad request
+    NotFound:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+      example:
+        type: NotFound
+        message: Entity not NotFound
+  responses:
+    '400':
+      description: "Bad request"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BadRequestException'
+    '404':
+      description: "Bad request not found"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NotFound"
