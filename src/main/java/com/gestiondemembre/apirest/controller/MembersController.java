@@ -20,8 +20,8 @@ public class MembersController {
 
     private final MembersService service;
     @GetMapping("")
-    public List<Members> getAllDishes(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> pageSize){
-        return service.getAllDishes(page, pageSize);
+    public List<Members> getAllMembers(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> pageSize){
+        return service.findAllMembers(page, pageSize);
     }
 
 }

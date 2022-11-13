@@ -16,10 +16,12 @@ public class MembersService {
 
     private final MembersRepository  repository;
 
-    public List<Members> getAllDishes (Optional<Integer> page, Optional<Integer> pageSize){
+    public List<Members> findAllMembers (Optional<Integer> page, Optional<Integer> pageSize){
         Pageable pageable = PageRequest.of(page.orElse(0), pageSize.orElse(10));
         return  repository.findAll(pageable).stream().toList();
 
     }
+
+
 
 }
